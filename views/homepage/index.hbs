@@ -1,0 +1,123 @@
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>TODO List</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <form class="form-inline" action="" method="">
+        <div class="input-group w-100">
+          <input type="text" name="description" id="taskDescription" placeholder="I have to..." class="form-control">
+          <div class="input-group-append">
+            <input type="button" onclick="saveTask();" value="Add" class="btn btn-primary">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12" id="tasksList">
+      {{#each tasks}}
+      <div class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}">
+        <div class="card-body">
+          <p class="card-text">{{ description }}</p>
+          {{#eq status 'pending'}}
+          <form method="POST" action="/update/{{id}}">
+            <!--parenNode debe ser un form para que se pueda ejecutar, no un div-->
+            <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Done</a>
+          </form>
+          {{/eq}}
+          <form method="POST" action="/delete/{{id}}">
+            <!--parenNode debe ser un form para que se pueda ejecutar, no un div-->
+            <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Delete</a>
+          </form>
+          
+            <input type="button" onclick="deleteTask({{id}});" value="Delete" class="btn btn-warning">
+          
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</main>
+
+<script>
+  function deleteTask(id){
+    
+    let body = {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
+
+  console.log(body);
+
+  let url = '/delete/'+id;
+  console.log("URL", url);
+
+  fetch(url, body)
+  .then(response =>{
+       if(response.ok){
+        return response.json();
+      }else{
+        throw "Error en la llamada Ajax"
+      }
+    })
+  }
+
+  function doneTask(){
+
+  }
+
+  function saveTask(){
+    let description = document.getElementById('taskDescription').value;
+    let body = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({description: description})
+    };
+
+    fetch('/tasks', body)
+    .then(response =>{
+      if(response.ok){
+        return response.json();
+      }else{
+        throw "Error en la llamada Ajax"
+      }
+    })
+    .then(task =>{
+      document.getElementById('taskDescription').value = '';
+      addTask(task);
+    })
+    .catch(error =>{
+      console.log('Error'+error);
+    })
+
+  }
+
+
+  function addTask(task){
+    console.log(task);
+    let html = `
+      <div class="card my-3">
+        <div class="card-body">
+          <p class="card-text">${task.description}</p>
+          <form method="POST" action="/update/${task.id}">
+            <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Done</a>
+          </form>
+        </div>
+      </div>
+    `;
+
+    let node = document.createRange().createContextualFragment(html);
+    document.getElementById('tasksList').prepend(node);
+
+  }
+
+</script>
