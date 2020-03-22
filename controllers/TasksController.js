@@ -15,6 +15,7 @@ exports.store = (req, res) => {
 
 exports.update = (req, res) => {
   let id = req.params.id;
+  console.log("ID", id);
   Task.find(id).then((task) => {
     return Task.done(task)
   }).then((result) => {

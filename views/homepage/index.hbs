@@ -33,7 +33,9 @@
             <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Delete</a>
           </form>
           
-            <input type="button" onclick="deleteTask({{id}});" value="Delete" class="btn btn-warning">
+            <input type="button" onclick="doneTask({{id}});" value="Done" class="btn btn-success">
+            <input type="button" onclick="deleteTask({{id}});" value="Delete" class="btn btn-danger">
+            
           
         </div>
       </div>
@@ -68,7 +70,34 @@
     })
   }
 
-  function doneTask(){
+
+
+  function doneTask(id){
+    let body = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
+
+
+    fetch('/update/'+id, body)
+    .then(response =>{
+      if(response.ok){
+        return response.json();
+      }else{
+        throw "Error en la llamada Ajax"
+      }
+    })
+    .then(task =>{
+      hideTask(task);
+    })
+    .catch(error =>{
+      console.log('Error'+error);
+    })
+
+
 
   }
 
@@ -111,6 +140,22 @@
           <form method="POST" action="/update/${task.id}">
             <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Done</a>
           </form>
+        </div>
+      </div>
+    `;
+
+    let node = document.createRange().createContextualFragment(html);
+    document.getElementById('tasksList').prepend(node);
+
+  }
+
+
+  function hideTask(task){
+    console.log(task);
+    let html = `
+      <div class="card my-3 bg-light">
+        <div class="card-body">
+          <p class="card-text">${task.description}</p>
         </div>
       </div>
     `;
