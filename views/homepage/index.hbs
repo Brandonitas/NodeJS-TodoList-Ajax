@@ -24,7 +24,7 @@
           <p class="card-text">{{ description }}</p>
 
           {{#eq status 'pending'}}
-            <input type="button" onclick="doneTask({{id}});" value="Done" class="btn btn-success">
+            <input id="btn-done" type="button" onclick="doneTask({{id}});" value="Done" class="btn btn-success btn-done">
           {{/eq}}
             <input type="button" onclick="deleteTask({{id}});" value="Delete" class="btn btn-danger">
             
@@ -86,8 +86,9 @@
     })
     .then(task =>{
       console.log(task.id);
-      
-      
+      var taskDiv = document.getElementById(task.id);
+      taskDiv.classList.add('bg-light');
+      taskDiv.querySelector('.btn-done').style.display = 'none';
 
     })
     .catch(error =>{
@@ -132,7 +133,7 @@
       <div id=${task.id} class="card my-3">
         <div class="card-body">
           <p class="card-text">${task.description}</p>
-           <input type="button" onclick="doneTask(${task.id});" value="Done" class="btn btn-success">
+           <input id="btn-done" type="button" onclick="doneTask(${task.id});" value="Done" class="btn btn-success">
             <input type="button" onclick="deleteTask(${task.id});" value="Delete" class="btn btn-danger">
         </div>
       </div>
@@ -143,19 +144,5 @@
 
   }
 
-
-  function hideTaskNew(task){
-    console.log(task);
-    let html = `
-      <div class="card my-3 bg-light">
-        <div class="card-body">
-          <p class="card-text">${task.description}</p>
-        </div>
-      </div>
-    `;
-
-    //let node = document.createRange().createContextualFragment(html);
-    //document.getElementById('tasksList').prepend(node);
-  }
 
 </script>
