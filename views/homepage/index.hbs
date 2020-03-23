@@ -57,16 +57,14 @@
     })
     .then(task =>{
       console.log(task.id);
-
       var childDeleted = document.getElementById(task.id);
       document.getElementById('tasksList').removeChild(childDeleted);
-      //hideTask(task);
+      
     })
     .catch(error =>{
       console.log('Error'+error);
     })
   }
-
 
 
   function doneTask(id){
@@ -87,7 +85,10 @@
       }
     })
     .then(task =>{
-      hideTaskNew(task);
+      console.log(task.id);
+      
+      
+
     })
     .catch(error =>{
       console.log('Error'+error);
@@ -128,7 +129,7 @@
   function addTask(task){
     console.log(task);
     let html = `
-      <div class="card my-3">
+      <div id=${task.id} class="card my-3">
         <div class="card-body">
           <p class="card-text">${task.description}</p>
            <input type="button" onclick="doneTask(${task.id});" value="Done" class="btn btn-success">
@@ -142,16 +143,6 @@
 
   }
 
-
-  function hideTask(task){
-    console.log("ENTRE AL HIDE TASK",task);
-    let html = `
-    
-    `;
-
-    //let node = document.createRange().createContextualFragment(html);
-    //document.getElementById('tasksList').prepend(node);
-  }
 
   function hideTaskNew(task){
     console.log(task);
