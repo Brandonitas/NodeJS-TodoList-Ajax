@@ -19,7 +19,7 @@
   <div class="row">
     <div class="col-lg-12" id="tasksList">
       {{#each tasks}}
-      <div class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}">
+      <div id={{id}} class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}">
         <div class="card-body">
           <p class="card-text">{{ description }}</p>
 
@@ -57,8 +57,9 @@
     })
     .then(task =>{
       console.log(task.id);
-      
-      //document.getElementById('tasksList').reload(true);
+
+      var childDeleted = document.getElementById(task.id);
+      document.getElementById('tasksList').removeChild(childDeleted);
       //hideTask(task);
     })
     .catch(error =>{
