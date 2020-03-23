@@ -37,7 +37,6 @@
 
 <script>
   function deleteTask(id){
-    
     let body = {
       method: 'DELETE',
       headers: {
@@ -57,7 +56,10 @@
       }
     })
     .then(task =>{
-      hideTask(task);
+      console.log(task.id);
+      
+      //document.getElementById('tasksList').reload(true);
+      //hideTask(task);
     })
     .catch(error =>{
       console.log('Error'+error);

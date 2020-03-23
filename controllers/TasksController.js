@@ -17,7 +17,7 @@ exports.update = (req, res) => {
   let id = req.params.id;
   console.log("ID", id);
   Task.find(id).then((task) => {
-    Task.done(task).then((task) => {
+    Task.done(task).then((taskDone) => {
       if(req.xhr || req.headers.accept.indexOf('json') > -1){
         res.json(task);
       }else{
@@ -34,7 +34,7 @@ exports.delete = (req, res) =>{
   let id = req.params.id;
   console.log("iddd", id);
   Task.find(id).then((task) =>{
-    Task.delete(task).then((task) => {
+    Task.delete(task).then((taskDeleted) => {
       if(req.xhr || req.headers.accept.indexOf('json') > -1){
         res.json(task);
       }else{
