@@ -22,21 +22,12 @@
       <div class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}">
         <div class="card-body">
           <p class="card-text">{{ description }}</p>
+
           {{#eq status 'pending'}}
-          <form method="POST" action="/update/{{id}}">
-            <!--parenNode debe ser un form para que se pueda ejecutar, no un div-->
-            <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Done</a>
-          </form>
-          {{/eq}}
-          <form method="POST" action="/delete/{{id}}">
-            <!--parenNode debe ser un form para que se pueda ejecutar, no un div-->
-            <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Delete</a>
-          </form>
-          
             <input type="button" onclick="doneTask({{id}});" value="Done" class="btn btn-success">
+          {{/eq}}
             <input type="button" onclick="deleteTask({{id}});" value="Delete" class="btn btn-danger">
             
-          
         </div>
       </div>
       {{/each}}
@@ -55,11 +46,8 @@
       }
     };
 
-  console.log(body);
-
   let url = '/delete/'+id;
-  console.log("URL", url);
-
+  
   fetch(url, body)
   .then(response =>{
        if(response.ok){
@@ -67,6 +55,12 @@
       }else{
         throw "Error en la llamada Ajax"
       }
+    })
+    .then(task =>{
+      hideTask(task);
+    })
+    .catch(error =>{
+      console.log('Error'+error);
     })
   }
 
@@ -81,7 +75,6 @@
       }
     };
 
-
     fetch('/update/'+id, body)
     .then(response =>{
       if(response.ok){
@@ -91,13 +84,11 @@
       }
     })
     .then(task =>{
-      hideTask(task);
+      hideTaskNew(task);
     })
     .catch(error =>{
       console.log('Error'+error);
     })
-
-
 
   }
 
@@ -137,9 +128,8 @@
       <div class="card my-3">
         <div class="card-body">
           <p class="card-text">${task.description}</p>
-          <form method="POST" action="/update/${task.id}">
-            <a href="javascript:;" onclick="parentNode.submit();" class="card-link">Done</a>
-          </form>
+           <input type="button" onclick="doneTask(${task.id});" value="Done" class="btn btn-success">
+            <input type="button" onclick="deleteTask(${task.id});" value="Delete" class="btn btn-danger">
         </div>
       </div>
     `;
@@ -151,6 +141,16 @@
 
 
   function hideTask(task){
+    console.log("ENTRE AL HIDE TASK",task);
+    let html = `
+    
+    `;
+
+    //let node = document.createRange().createContextualFragment(html);
+    //document.getElementById('tasksList').prepend(node);
+  }
+
+  function hideTaskNew(task){
     console.log(task);
     let html = `
       <div class="card my-3 bg-light">
@@ -160,9 +160,8 @@
       </div>
     `;
 
-    let node = document.createRange().createContextualFragment(html);
-    document.getElementById('tasksList').prepend(node);
-
+    //let node = document.createRange().createContextualFragment(html);
+    //document.getElementById('tasksList').prepend(node);
   }
 
 </script>

@@ -17,9 +17,15 @@ exports.update = (req, res) => {
   let id = req.params.id;
   console.log("ID", id);
   Task.find(id).then((task) => {
-    return Task.done(task)
+    Task.done(task).then((task) => {
+      if(req.xhr || req.headers.accept.indexOf('json') > -1){
+        res.json(task);
+      }else{
+        res.redirect('/');
+      }
+    })
   }).then((result) => {
-    res.redirect('/');
+    //res.redirect('/');
   })
 
 }
@@ -28,9 +34,15 @@ exports.delete = (req, res) =>{
   let id = req.params.id;
   console.log("iddd", id);
   Task.find(id).then((task) =>{
-    return Task.delete(task)
+    Task.delete(task).then((task) => {
+      if(req.xhr || req.headers.accept.indexOf('json') > -1){
+        res.json(task);
+      }else{
+        res.redirect('/');
+      }
+    })
   }).then((result) =>{
-    res.redirect('/');
+    //res.redirect('/');
   })
 }
 
