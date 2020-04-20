@@ -5,7 +5,11 @@ exports.store = (req, res) => {
   task.description = req.body.description;
   Task.create(task).then((id) => {
     if(req.xhr || req.headers.accept.indexOf('json') > -1){
-      Task.find(id).then((task) => res.json(task));
+      Task.find(id).then((task) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+        res.json(task)});
     }else{
       res.redirect('/');
     }
@@ -45,4 +49,15 @@ exports.delete = (req, res) =>{
     //res.redirect('/');
   })
 }
+
+exports.get = (req, res) => {
+  let tasks = Task.all().then((tasks) => {
+    //Esto me permite hacer la petición desde cualquier url
+    res.header("Access-Control-Allow-Origin", "*");
+    res.send(tasks);
+    //res.json(tasks);
+    //res.render('homepage/index', {tasks: tasks});
+  });
+}
+ 
 
