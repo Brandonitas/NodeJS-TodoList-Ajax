@@ -8,6 +8,9 @@ const app = express();
 // Configurations
 const appConfig = require('./configs/app');
 
+//CORS
+const cors = require('cors');
+
 // View engine configs
 const exphbs = require('express-handlebars');
 const hbshelpers = require("handlebars-helpers");
@@ -25,6 +28,9 @@ app.use(express.urlencoded({ extended: true }))
 
 //Ya aceptamos peticiones con json
 app.use(express.json());
+
+//Configure CORS
+app.use(cors());
 
 // Routes
 app.use('/', webRoutes);

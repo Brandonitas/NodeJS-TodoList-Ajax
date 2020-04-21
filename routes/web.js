@@ -12,6 +12,7 @@ router.delete('/delete/:id', tasksController.delete);
 
 //NEW API 
 router.get('/api/tasks', tasksController.get);
+router.get('/api/tasks/:id', tasksController.getInfo);
 router.post('/api/tasks', tasksController.store);
 router.put('/api/update/:id', tasksController.update);
 router.delete('/api/delete/:id', tasksController.delete);
